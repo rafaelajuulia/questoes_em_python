@@ -1,0 +1,17 @@
+# Esse código vai pedir a quantidade de termos que você deseja saber
+# da sequencia de fibonacci
+
+
+print("******FIBONACCI******")
+
+n=int(input("quantos termos você quer mostrar? "))
+a=0
+b=1
+conta=1
+while conta<= n:
+    c=a+b
+    print(c)
+    a=b
+    b=c
+    conta+=1
+

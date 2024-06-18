@@ -1,3 +1,6 @@
+# crie um programa em python que diga se o número digitado pelo usuário
+# é impar ou par.
+
 num= int(input("digite um numero qualquer: "))
 if num % 2 == 0:
     print("o numero é par")

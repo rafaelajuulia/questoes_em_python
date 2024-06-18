@@ -1,0 +1,16 @@
+
+#Crie um código que leia a altura de 15 pessoas e informe qual a maior e a menor altura.
+menor=3.0
+maior=0.0
+for i in range(1,16):
+    altura=float(input("informe a sua altura: "))
+   
+    if altura<menor:
+        menor=altura
+    if altura>maior:
+        maior=altura
+        
+print("a menor altura é %f"%menor)
+print("a maior altura é %f"%maior)
+
+

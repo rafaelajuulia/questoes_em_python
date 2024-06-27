@@ -1,0 +1,77 @@
+def obter_matriz():
+    matriz = []
+    for i in range(3):
+        linha = []
+        for j in range(3):
+            linha.append(float(input(f"Digite o elemento da linha {i+1}, coluna {j+1}: ")))
+        matriz.append(linha)
+    return matriz
+
+def imprimir_matriz(matriz):
+    for linha in matriz:
+        print(' '.join(str(elem) for elem in linha))
+
+def maior_elemento_fora_diagonal(matriz):
+    n = len(matriz)
+    max_elem = 0.0
+    for i in range(n-1):
+        for j in range(i+1, n):
+            if abs(matriz[i][j]) >= max_elem:
+                max_elem = abs(matriz[i][j])
+                k = i
+                l = j
+    return k, l
+
+#Usamos o metodo rotação de jacobi, que é um metodo usado
+#para diagonalizar matrizes, sendo util para encontrar 
+#autovalores e autovetores
+def rotacao_jacobi(matriz, p, q):
+    t=0
+    if matriz[p][q] != 0.0:
+        d = (matriz[q][q] - matriz[p][p]) / (2.0 * matriz[p][q])
+        if abs(d) > 1e100:  # Se d é muito grande, defina t como um número grande
+            t = 1e100
+        else:
+            t = 1.0 / (abs(d) + (d*2 + 1)*0.5)
+        if d < 0.0:
+            t = -t
+        c = 1.0 / (1 + t*2)*0.5
+        s = t * c
+    else:
+        c = 1.0
+        s = 0.0
+    return c, s, t
+
+def diagonalizar(matriz, iteracoes=100):
+    n = len(matriz)
+    for _ in range(iteracoes):
+        p, q = maior_elemento_fora_diagonal(matriz)
+        c, s, t = rotacao_jacobi(matriz, p, q)
+        for i in range(n):
+            if i != p and i != q:
+                matriz[p][i] = matriz[i][p] = c * matriz[p][i] + s * matriz[q][i]
+                matriz[q][i] = matriz[i][q] = c * matriz[q][i] - s * matriz[p][i]
+        matriz[p][p] = matriz[p][p] + t * matriz[p][q]
+        matriz[q][q] = matriz[q][q] - t * matriz[p][q]
+        matriz[p][q] = matriz[q][p] = 0.0
+    return matriz
+
+def verificar_diagonalizavel(matriz):
+    #uma matriz só é diagonalizavel se todos os seus autovalores são reais.
+    # Como estamos trabalhando com números de ponto flutuante, verificamos se a parte imaginária é suficientemente pequena.
+    autovalores = [matriz[i][i] for i in range(len(matriz))]
+    return all(abs(autovalor.imag) < 1e-10 for autovalor in autovalores)
+
+def principal():
+    A = obter_matriz()
+    print("Matriz original:")
+    imprimir_matriz(A)
+
+    if verificar_diagonalizavel(A):
+        D = diagonalizar(A)
+        print("Matriz diagonal:")
+        imprimir_matriz(D)
+    else:
+        print("A matriz não é diagonalizável.")
+
+principal()

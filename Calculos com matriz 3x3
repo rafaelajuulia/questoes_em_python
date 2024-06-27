@@ -1,0 +1,55 @@
+#este codigo serve para dar as opções ao usuario de qual calculo ele gostaria de realizar
+#adição, subtração, multiplicação por escalar, multiplicação entre matrizes, inversa ou sair do programa.
+
+import numpy as np
+
+#criando menu
+def menu():
+    print("1. Adição de matrizes")
+    print("2. Subtração de matrizes")
+    print("3. Multiplicação por escalar")
+    print("4. Multiplicação entre matrizes")
+    print("5. Inversa da matriz")
+    print("6. Sair")
+    opcao = int(input("Escolha a operação que deseja realizar: "))
+    return opcao
+
+#pedindo ao usuário os valores da matriz.
+def ler_matriz():
+    matriz = []
+    for i in range(3):
+        linha = []
+        for j in range(3):
+            valor = float(input(f"Digite o valor para a posição [{i+1},{j+1}]: "))
+            linha.append(valor)
+        matriz.append(linha)
+    return np.array(matriz)
+
+#contas referentes as opções.
+def main():
+    while True:
+        opcao = menu()
+        if opcao == 6:
+            break
+        matriz1 = ler_matriz()
+        if opcao in [1,2,4]:
+            matriz2 = ler_matriz()
+        if opcao == 1:
+            resultado = matriz1 + matriz2
+        elif opcao == 2:
+            resultado = matriz1 - matriz2
+        elif opcao == 3: 
+            escalar = float(input("Digite o valor do escalar: "))
+            resultado = matriz1 * escalar
+        elif opcao == 4:
+            resultado = matriz1 @ matriz2
+        elif opcao == 5:
+            try:
+                resultado = np.linalg.inv(matriz1)
+            except np.linalg.LinAlgError:
+                resultado = "A matriz não possui inversa!"
+        print("O resultado é: ")
+        print(resultado)
+
+if __name__ == "__main__":
+    main()
